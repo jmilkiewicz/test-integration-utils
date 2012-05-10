@@ -42,11 +42,7 @@
 					<xmlOutput>true</xmlOutput>
 					<sourceEncoding>UTF-8</sourceEncoding>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-			</plugin>
+			</plugin>			
 		</plugins>
 	</build>
 	<dependencies>
@@ -73,6 +69,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.6</version>
 			</plugin>
 		</plugins>
 	</reporting>
