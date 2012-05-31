@@ -1,13 +1,9 @@
 package pl.softmil.test.integration.utils.validation;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import javax.validation.ConstraintViolation;
 
@@ -27,9 +23,9 @@ public class ConstraintViolationHelper {
         this.constraintViolations = constraintViolations;
     }
 
-    public void assertGivenNumberViolationsRaised(int numberOfViolationsRaised) {
+    public void assertGivenNumberViolationsRaised(org.hamcrest.Matcher<? super java.lang.Integer> sizeMatcher) {
         Assert.assertThat("incorrect number of violations raised",
-                constraintViolations, hasSize(numberOfViolationsRaised));
+                constraintViolations, hasSize(sizeMatcher));
     }
 
     public void assertAnyViolationsRaised() {
@@ -39,7 +35,7 @@ public class ConstraintViolationHelper {
     }
 
     public void assertNoViolationsRaised() {
-        assertGivenNumberViolationsRaised(0);
+        assertGivenNumberViolationsRaised(equalTo(0));
 
     }
 
