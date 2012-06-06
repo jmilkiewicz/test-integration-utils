@@ -1,7 +1,7 @@
 package pl.softmil.test.integration.utils.http;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.*;
@@ -14,7 +14,7 @@ import org.apache.http.params.*;
 public class HttpResourceRetriever {
     private AbstractHttpClient httpClient = new DefaultHttpClient();
 
-    public HttpResourceRetriever withCookies(Set<Cookie> cookiesToSet) {
+    public HttpResourceRetriever withCookies(Collection<Cookie> cookiesToSet) {
         httpClient.getCookieStore().clear();
         for (Cookie cookie : cookiesToSet) {
             httpClient.getCookieStore().addCookie(cookie);
