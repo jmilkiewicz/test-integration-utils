@@ -14,7 +14,7 @@ import org.apache.http.params.*;
 public class HttpResourceRetriever {
     private AbstractHttpClient httpClient = new DefaultHttpClient();
 
-    public HttpResourceRetriever withCookies(Collection<Cookie> cookiesToSet) {
+    public HttpResourceRetriever withCookies(Collection<? extends Cookie> cookiesToSet) {
         httpClient.getCookieStore().clear();
         for (Cookie cookie : cookiesToSet) {
             httpClient.getCookieStore().addCookie(cookie);
