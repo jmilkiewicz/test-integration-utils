@@ -6,8 +6,10 @@ import java.util.Set;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.*;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.params.ClientPNames;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.*;
+import org.apache.http.params.*;
 
 public class HttpResourceRetriever {
     private AbstractHttpClient httpClient = new DefaultHttpClient();
@@ -17,6 +19,13 @@ public class HttpResourceRetriever {
         for (Cookie cookie : cookiesToSet) {
             httpClient.getCookieStore().addCookie(cookie);
         }
+        return this;
+    }
+    
+    public HttpResourceRetriever withNoRedirectionFollowing(){
+        HttpParams params = new BasicHttpParams();
+        params.setParameter(ClientPNames.HANDLE_REDIRECTS, false);
+        httpClient.setParams(params);
         return this;
     }
 
