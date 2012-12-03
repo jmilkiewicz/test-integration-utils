@@ -4,14 +4,37 @@
 	<groupId>pl.softmil.test</groupId>
 	<artifactId>test-integration-utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<description>utilities and helpers for integration testing</description>
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/jmilkiewicz/test-integration-utils/issues</url>
+	</issueManagement>
+	<scm>
+		<url>https://github.com/jmilkiewicz/dumbster</url>
+		<connection>scm:git:ssh://git@github.com/jmilkiewicz/test-integration-utils.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jmilkiewicz/test-integration-utils.git</developerConnection>
+	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
 		<targetJdk>1.6</targetJdk>
 		<org.slf4j-version>1.6.4</org.slf4j-version>
 		<logback-version>1.0.1</logback-version>
+
+		<version.extension.wagon-webdav>1.0-beta-2</version.extension.wagon-webdav>
+		<version.plugin.maven-resources-plugin>2.4.3</version.plugin.maven-resources-plugin>
+		<version.plugin.maven-source-plugin>2.1.2</version.plugin.maven-source-plugin>
+		<version.plugin.maven-javadoc-plugin>2.7</version.plugin.maven-javadoc-plugin>
+		<version.plugin.maven-release-plugin>2.2.2</version.plugin.maven-release-plugin>
 	</properties>
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>${version.extension.wagon-webdav}</version>
+			</extension>
+		</extensions>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -32,11 +55,26 @@
 					<artifactId>maven-pmd-plugin</artifactId>
 					<version>2.6</version>
 				</plugin>
-			        <plugin>
-                                         <groupId>org.codehaus.mojo</groupId>
-                                        <artifactId>cobertura-maven-plugin</artifactId>
-                                        <version>2.5.2</version>
-                                </plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${version.plugin.maven-source-plugin}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${version.plugin.maven-release-plugin}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${version.plugin.maven-javadoc-plugin}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -47,40 +85,54 @@
 					<findbugsXmlOutput>true</findbugsXmlOutput>
 					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
 					<xmlOutput>true</xmlOutput>
-					<sourceEncoding>UTF-8</sourceEncoding>
+					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
 				</configuration>
-			</plugin>			
-		        <plugin>
-                                <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>cobertura-maven-plugin</artifactId>
-                                <configuration>
-                                    <formats>
-                                        <format>xml</format>
-                                    </formats>
-                                </configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<configuration>
+					<formats>
+						<format>xml</format>
+					</formats>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<encoding>${source.encoding}</encoding>
+				</configuration>
 				<executions>
-	                    <execution>
-        	                <phase>package</phase>
-                	        <goals>
-                        	    <goal>cobertura</goal>
-	                        </goals>
-        	            </execution>
-                </executions>
-                        </plugin>
-
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>test-utils</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>simpleWebTest</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>simpleframework-utils</artifactId>
+			<version>0.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -129,7 +181,7 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
-			</exclusions>	
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -146,12 +198,20 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${logback-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.simpleframework</groupId>
-			<artifactId>simple</artifactId>
-			<version>4.1.21</version>
-		</dependency>
 	</dependencies>
+	<distributionManagement>
+		<downloadUrl>https://github.com/jmilkiewicz/test-integration-utils</downloadUrl>
+		<repository>
+			<id>softmil-cloudbees-release</id>
+			<name>softmil-cloudbees-release</name>
+			<url>dav:https://repository-softmil.forge.cloudbees.com/release/</url>
+		</repository>
+		<snapshotRepository>
+			<id>softmil-cloudbees-snapshot</id>
+			<name>softmil-cloudbees-snapshot</name>
+			<url>dav:https://repository-softmil.forge.cloudbees.com/snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<reporting>
 		<plugins>
 			<plugin>
@@ -161,4 +221,14 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<repositories>
+		<repository>
+			<id>softmil-cloudbess-release</id>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<name>softmil-cloudbess-release repository</name>
+			<url>http://repository-softmil.forge.cloudbees.com/release/</url>
+		</repository>
+	</repositories>
 </project>
